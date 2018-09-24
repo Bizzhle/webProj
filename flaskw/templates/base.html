@@ -1,0 +1,194 @@
+<!doctype html>
+
+
+<head>
+    <title>{% block title %}{% endblock %} - Learn & Build</title>
+    <!-- block title  will change the title displayed in the browser’s tab and window title.-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <style>
+        html {
+            font-family: sans-serif;
+            background: #eee;
+            padding: 1rem;
+        }
+
+        body {
+            min-width: 100%;
+            margin: 0 auto;
+            background: white;
+        }
+
+        h1 {
+            font-family: serif;
+            color: #377ba8;
+            margin: 1rem 0;
+        }
+
+        a {
+            color: #2e9acc;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid lightgray;
+        }
+
+        nav {
+            background: lightgray;
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+            height: 60px;
+        }
+
+        nav h1 {
+            flex: auto;
+            margin: 0;
+            font-size: 2em
+        }
+
+        nav h1 a {
+            text-decoration: none;
+            padding: 0.25rem 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li a,
+        nav ul li span,
+        header .action {
+            display: block;
+            padding: 0.5rem;
+        }
+
+        aside {
+            width: 30%;
+            float: right;
+        }
+
+        section {
+            width: 70%;
+            float: left;
+        }
+
+        .content {
+            padding: 0 1rem 1rem;
+        }
+
+        .content>header {
+            border-bottom: 1px solid lightgray;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .content>header h1 {
+            flex: auto;
+            margin: 1rem 0 0.25rem 0;
+        }
+
+        .flash {
+            margin: 1em 0;
+            padding: 1em;
+            background: #cae6f6;
+            border: 1px solid #377ba8;
+        }
+
+        .post>header {
+            display: flex;
+            align-items: flex-end;
+            font-size: 0.85em;
+        }
+
+        .post>header>div:first-of-type {
+            flex: auto;
+        }
+
+        .post>header h1 {
+            font-size: 1.5em;
+            margin-bottom: 0;
+        }
+
+        .post .about {
+            color: slategray;
+            font-style: italic;
+        }
+
+        .post .body {
+            white-space: pre-line;
+        }
+
+        .content:last-child {
+            margin-bottom: 0;
+        }
+
+        .content form {
+            margin: 1em 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content label {
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+
+        .content input,
+        .content textarea {
+            margin-bottom: 1em;
+        }
+
+        .content textarea {
+            min-height: 12em;
+            resize: vertical;
+        }
+
+        input.danger {
+            color: #cc2f2e;
+        }
+
+        input[type=submit] {
+            align-self: start;
+            min-width: 10em;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <h1>Learn & Build</h1>
+        <ul>
+            {% if g.user %}
+            <!-- Either the username and a log out link are displayed, otherwise links to register and log in are displayed -->
+            <li><span>{{ g.user['username'] }}</span>
+            <li><a href="{{ url_for('auth.logout') }}"> Log Out</a>
+                {% else %}
+            <li><a href="{{ url_for('auth.register') }}">Register</a>
+            <li><a href="{{ url_for('auth.login') }}">Log In</a>
+                {% endif %}
+        </ul>
+    </nav>
+    <aside>
+        {% if g.user %}
+        <a class="button" href="{{ url_for('blog.create') }}">Create a post</a>
+        {% else %}
+        <a class="button" href="{{ url_for('auth.login') }}">Create a post</a>
+        {% endif %}
+    </aside>
+
+    <section class="content">
+        <header>
+            {% block header %}{% endblock %}
+            <!--block header  is similar to title but will change the title displayed on the page. -->
+        </header>
+        {% for message in get_flashed_messages() %}
+        <div class="flash"> {{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+        <!-- block content  is where the content of each page goes, such as the login form or a blog post.-->
+    </section>
+</body>

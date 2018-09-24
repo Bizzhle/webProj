@@ -1,0 +1,28 @@
+{% extends base.html %}
+
+{% block header%}
+<h1>{% block title %}Cretae a post{% endblock %</h1>}
+{% endblock %}
+
+{% block content %}
+<button class="tablink" onclick="openPage('Post', this, 'red')">Post</button>
+<button class="tablink" onclick="openPage('image', this, 'green')" id="defaultOpen">Image & Video</button>
+
+<div id="post" class="tabcontent">
+    <h3>Post</h3>
+    <form method="post">
+        <label for="title">Title</label>
+        <input name="title" id="title" value="{{ request.form['title'] }}" required>
+        <label for="body">Body</label>
+        <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
+        <input type="submit" value="Save">
+    </form>
+</div>
+
+<div id="image" class="tabcontent">
+    <h3>Image & Video</h3>
+    <form method=post enctype=multipart/form-data> <input type=file name=file>
+        <input type=submit value=Upload>
+    </form>
+</div>
+{% endblock %}
